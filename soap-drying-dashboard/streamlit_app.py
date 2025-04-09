@@ -29,6 +29,16 @@ if uploaded_file:
         soap_name = all_sheets[sheet_name].iloc[0, 0]
         df["Retained (%)"] = 1 - (df["Total Loss (%)"] / 100)
 
+        # Insert baseline point at Day 0, 100%
+        if 0 not in df["Days Since Baseline"].values:
+            baseline = pd.DataFrame({
+                "Days Since Baseline": [0],
+                "Retained (%)": [1.0]
+            })
+            df = pd.concat([baseline, df[["Days Since Baseline", "Retained (%)"]]], ignore_index=True)
+        else:
+            df = df[["Days Since Baseline", "Retained (%)"]]
+
         min_retained = min(min_retained, df["Retained (%)"].min())
         max_day = max(max_day, df["Days Since Baseline"].max())
 
@@ -48,7 +58,7 @@ if uploaded_file:
     ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda y, _: f"{int(y * 100)}%"))
 
     ax.set_xlabel("Days Since Baseline")
-    ax.set_ylabel("Retained Mass (%)")
+    ax.set_ylabel("Retained Weight (%)")
     ax.set_title("Soap Retained Weight Over Time")
     ax.grid(True)
     ax.legend()
