@@ -7,7 +7,25 @@ import math
 st.set_page_config(layout="wide")
 st.title("Soap Drying Tracker 📉🧼")
 
+# 👇 Add version + changelog in the sidebar
+__version__ = "v0.2.0"
+__release_date__ = date.today().strftime("%Y-%m-%d")
+
+changelog = """
+### Changelog ({__release_date__})
+- 📍 Added baseline point at Day 0 (100% retained weight)
+- 🧼 Refined Y-axis behavior (min 90% unless data drops lower)
+- 📈 Improved chart formatting
+"""
+
+with st.sidebar:
+    st.markdown(f"**Version:** {__version__}  \n**Date:** {__release_date__}")
+    with st.expander("Show changelog"):
+        st.markdown(changelog)
+
+# 👇 Now the uploader
 uploaded_file = st.file_uploader("Upload your Excel file", type=["xlsx"])
+
 
 if uploaded_file:
     all_sheets = pd.read_excel(uploaded_file, sheet_name=None, engine="openpyxl")
