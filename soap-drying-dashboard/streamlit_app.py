@@ -1,8 +1,17 @@
+"""
+Soap Drying Tracker – Streamlit App
+-----------------------------------
+
+Tracks retained weight of handmade soaps over time based on Excel input files.
+Generates  line plots per soap batch, showing % retained weight.
+
+"""
 
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import math
+from datetime import date
 
 st.set_page_config(layout="wide")
 st.title("Soap Drying Tracker 📉🧼")
@@ -45,7 +54,7 @@ if uploaded_file:
             continue
 
         soap_name = all_sheets[sheet_name].iloc[0, 0]
-        df["Retained (%)"] = 1 - (df["Total Loss (%)"] / 100)
+        df["Retained (%)"] = 1 - (df["Total Loss (%)"])
 
         # Insert baseline point at Day 0, 100%
         if 0 not in df["Days Since Baseline"].values:
